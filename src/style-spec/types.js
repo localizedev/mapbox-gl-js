@@ -76,6 +76,13 @@ export type LightSpecification = {|
     "intensity"?: PropertyValueSpecification<number>
 |}
 
+
+declare type ClusterMapReduceSpecification = {|
+    "initial"?: mixed,
+    "map"?: mixed,
+    "reduce"?: mixed
+|}
+
 export type VectorSourceSpecification = {
     "type": "vector",
     "url"?: string,
@@ -122,7 +129,9 @@ export type GeoJSONSourceSpecification = {|
     "clusterRadius"?: number,
     "clusterMaxZoom"?: number,
     "lineMetrics"?: boolean,
-    "generateId"?: boolean
+    "generateId"?: boolean,
+    "clusterMapReduce"?: ClusterMapReduceSpecification,
+    "lineMetrics"?: boolean
 |}
 
 export type VideoSourceSpecification = {|
