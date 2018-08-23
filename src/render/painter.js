@@ -343,6 +343,12 @@ class Painter {
         this.renderPass = 'offscreen';
         this.depthRboNeedsClear = true;
 
+        // Counter-clockwise winding order for culling back-facing triangles.
+        {
+            const gl = this.context.gl;
+            this.context.setCullFace(true, gl.BACK, gl.CCW);
+        }
+
         for (const layerId of layerIds) {
             const layer = this.style._layers[layerId];
             if (!layer.hasOffscreenPass() || layer.isHidden(this.transform.zoom)) continue;
