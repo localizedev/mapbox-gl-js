@@ -116,7 +116,8 @@ function prepareHillshade(painter, tile, layer, sourceMaxZoom, depthMode, stenci
             depthMode, stencilMode, colorMode,
             hillshadeUniformPrepareValues(tile, sourceMaxZoom),
             layer.id, painter.rasterBoundsBuffer,
-            painter.quadTriangleIndexBuffer, painter.rasterBoundsSegments);
+            // We flip the Y-axis, so we need to use an inverted winding order.
+            painter.quadTriangleIndexBufferInverted, painter.rasterBoundsSegments);
 
         tile.needsHillshadePrepare = false;
     }

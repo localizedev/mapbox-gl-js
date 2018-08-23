@@ -96,6 +96,7 @@ class Painter {
     viewportBuffer: VertexBuffer;
     viewportSegments: SegmentVector;
     quadTriangleIndexBuffer: IndexBuffer;
+    quadTriangleIndexBufferInverted: IndexBuffer;
     tileBorderIndexBuffer: IndexBuffer;
     _tileClippingMaskIDs: { [number]: number };
     stencilClearMode: StencilMode;
@@ -199,9 +200,24 @@ class Painter {
         this.tileBorderIndexBuffer = context.createIndexBuffer(tileLineStripIndices);
 
         const quadTriangleIndices = new TriangleIndexArray();
-        quadTriangleIndices.emplaceBack(0, 1, 2);
-        quadTriangleIndices.emplaceBack(2, 1, 3);
+        // ┌──────┐
+        // │ 0  1 │ Counter-clockwise winding order.
+        // │      │ Triangle 1: 0 => 2 => 1
+        // │ 2  3 │ Triangle 2: 1 => 2 => 3
+        // └──────┘
+        quadTriangleIndices.emplaceBack(0, 2, 1);
+        quadTriangleIndices.emplaceBack(1, 2, 3);
         this.quadTriangleIndexBuffer = context.createIndexBuffer(quadTriangleIndices);
+
+        // ┌──────┐
+        // │ 1  0 │ Counter-clockwise winding order (inverted Y-axis).
+        // │      │ Triangle 1: 0 => 1 => 2
+        // │ 3  2 │ Triangle 2: 1 => 2 => 3
+        // └──────┘
+        const quadTriangleIndicesInverted = new TriangleIndexArray();
+        quadTriangleIndicesInverted.emplaceBack(0, 1, 2);
+        quadTriangleIndicesInverted.emplaceBack(1, 3, 2);
+        this.quadTriangleIndexBufferInverted = context.createIndexBuffer(quadTriangleIndicesInverted);
 
         const gl = this.context.gl;
         this.stencilClearMode = new StencilMode({ func: gl.ALWAYS, mask: 0 }, 0x0, 0xFF, gl.ZERO, gl.ZERO, gl.ZERO);

@@ -495,7 +495,7 @@ class LineBucket implements Bucket {
      * @param {Object} currentVertex the line vertex to add buffer vertices for
      * @param {number} distance the distance from the beginning of the line to the vertex
      * @param {number} endLeft extrude to shift the left vertex along the line
-     * @param {number} endRight extrude to shift the left vertex along the line
+     * @param {number} endRight extrude to shift the right vertex along the line
      * @param {boolean} round whether this is a round cap
      * @private
      */
@@ -521,7 +521,8 @@ class LineBucket implements Bucket {
         addLineVertex(layoutVertexArray, currentVertex, extrude, round, false, endLeft, distance);
         this.e3 = segment.vertexLength++;
         if (this.e1 >= 0 && this.e2 >= 0) {
-            indexArray.emplaceBack(this.e1, this.e2, this.e3);
+            // Counter-clockwise winding order.
+            indexArray.emplaceBack(this.e1, this.e3, this.e2);
             segment.primitiveLength++;
         }
         this.e1 = this.e2;
@@ -532,6 +533,9 @@ class LineBucket implements Bucket {
         addLineVertex(layoutVertexArray, currentVertex, extrude, round, true, -endRight, distance);
         this.e3 = segment.vertexLength++;
         if (this.e1 >= 0 && this.e2 >= 0) {
+            // Clockwise winding order.
+            // This triangle is set to the back face because 'up' is true, but we want to treat it as a front-facing
+            // one, thus the inverted winding order.
             indexArray.emplaceBack(this.e1, this.e2, this.e3);
             segment.primitiveLength++;
         }
@@ -573,7 +577,8 @@ class LineBucket implements Bucket {
         addLineVertex(layoutVertexArray, currentVertex, extrude, false, lineTurnsLeft, 0, distance);
         this.e3 = segment.vertexLength++;
         if (this.e1 >= 0 && this.e2 >= 0) {
-            indexArray.emplaceBack(this.e1, this.e2, this.e3);
+            // Counter-clockwise winding order.
+            indexArray.emplaceBack(this.e1, this.e3, this.e2);
             segment.primitiveLength++;
         }
 
