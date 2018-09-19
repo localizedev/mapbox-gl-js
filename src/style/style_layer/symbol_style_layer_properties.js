@@ -15,12 +15,13 @@ import {
 
 import type Color from '../../style-spec/util/color';
 
-import type {Formatted} from '../../style-spec/expression/definitions/formatted';
+import type Formatted from '../../style-spec/expression/types/formatted';
 
 export type LayoutProps = {|
     "symbol-placement": DataConstantProperty<"point" | "line" | "line-center">,
     "symbol-spacing": DataConstantProperty<number>,
     "symbol-avoid-edges": DataConstantProperty<boolean>,
+    "symbol-z-order": DataConstantProperty<"viewport-y" | "source">,
     "icon-allow-overlap": DataConstantProperty<boolean>,
     "icon-ignore-placement": DataConstantProperty<boolean>,
     "icon-optional": DataConstantProperty<boolean>,
@@ -37,7 +38,7 @@ export type LayoutProps = {|
     "icon-pitch-alignment": DataConstantProperty<"map" | "viewport" | "auto">,
     "text-pitch-alignment": DataConstantProperty<"map" | "viewport" | "auto">,
     "text-rotation-alignment": DataConstantProperty<"map" | "viewport" | "auto">,
-    "text-field": DataDrivenProperty<string | Formatted>,
+    "text-field": DataDrivenProperty<Formatted>,
     "text-font": DataDrivenProperty<Array<string>>,
     "text-size": DataDrivenProperty<number>,
     "text-max-width": DataDrivenProperty<number>,
@@ -60,6 +61,7 @@ const layout: Properties<LayoutProps> = new Properties({
     "symbol-placement": new DataConstantProperty(styleSpec["layout_symbol"]["symbol-placement"]),
     "symbol-spacing": new DataConstantProperty(styleSpec["layout_symbol"]["symbol-spacing"]),
     "symbol-avoid-edges": new DataConstantProperty(styleSpec["layout_symbol"]["symbol-avoid-edges"]),
+    "symbol-z-order": new DataConstantProperty(styleSpec["layout_symbol"]["symbol-z-order"]),
     "icon-allow-overlap": new DataConstantProperty(styleSpec["layout_symbol"]["icon-allow-overlap"]),
     "icon-ignore-placement": new DataConstantProperty(styleSpec["layout_symbol"]["icon-ignore-placement"]),
     "icon-optional": new DataConstantProperty(styleSpec["layout_symbol"]["icon-optional"]),
